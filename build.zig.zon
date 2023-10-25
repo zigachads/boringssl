@@ -1,0 +1,17 @@
+.{
+    .name = "boringssl",
+    .version = "0.0.1",
+    .paths = .{
+        "./crypto.zig",
+        "./ssl.zig",
+        "./err_data.c",
+        "./build.zig",
+        "./build.zig.zon",
+    },
+    .dependencies = .{
+        .boringssl_source = .{
+            .url = "https://gitbetter.dev/mirrors/boringssl/archive/bfa8369795b7533a222a72b7a1bc928941cd66bf.tar.gz",
+            .hash = "1220c9edf3d3dc7303c03972e79523ab9b29ab5ebf8a2f08903393ea3ceeb31eb6aa",
+        },
+    },
+}
