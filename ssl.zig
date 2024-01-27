@@ -6,7 +6,7 @@ pub fn build(
     optimize: std.builtin.OptimizeMode,
     boringssl_dep: *std.Build.Dependency,
 ) !*std.Build.Step.Compile {
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addSharedLibrary(.{
         .name = "ssl",
         .optimize = optimize,
         .target = target,
@@ -20,13 +20,17 @@ pub fn build(
     lib.defineCMacro("ARCH", "generic");
     lib.defineCMacro("OPENSSL_NO_ASM", null);
 
-    lib.defineCMacro("OPENSSL_NO_THREADS_CORRUPT_MEMORY_AND_LEAK_SECRETS_IF_THREADED", null);
-    lib.defineCMacro("SO_KEEPALIVE", "0");
-    lib.defineCMacro("SO_ERROR", "0");
-    lib.defineCMacro("FREEBSD_GETRANDOM", null);
-    lib.defineCMacro("getrandom(a,b,c)", "getentropy(a,b)|b");
-    lib.defineCMacro("GRND_NONBLOCK", "0");
-    lib.defineCMacro("WIN32_LEAN_AND_MEAN", null);
+    if (target.result.os.tag == .wasi) {
+        lib.defineCMacro("OPENSSL_NO_THREADS_CORRUPT_MEMORY_AND_LEAK_SECRETS_IF_THREADED", null);
+        lib.defineCMacro("SO_KEEPALIVE", "0");
+        lib.defineCMacro("SO_ERROR", "0");
+        lib.defineCMacro("FREEBSD_GETRANDOM", null);
+        lib.defineCMacro("getrandom(a,b,c)", "getentropy(a,b)|b");
+        lib.defineCMacro("socket(a,b,c)", "-1");
+        lib.defineCMacro("setsockopt(a,b,c,d,e)", "-1");
+        lib.defineCMacro("connect(a,b,c)", "-1");
+        lib.defineCMacro("GRND_NONBLOCK", "0");
+    }
 
     const cflags: []const []const u8 = &[_][]const u8{
         "-Wall",
