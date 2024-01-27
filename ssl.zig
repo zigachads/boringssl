@@ -2,10 +2,10 @@ const std = @import("std");
 
 pub fn build(
     b: *std.Build,
-    target: std.zig.CrossTarget,
+    target: std.Build.ResolvedTarget,
     optimize: std.builtin.OptimizeMode,
-    boringssl_dep: *std.build.Dependency,
-) !*std.build.LibExeObjStep {
+    boringssl_dep: *std.Build.Dependency,
+) !*std.Build.Step.Compile {
     const lib = b.addStaticLibrary(.{
         .name = "ssl",
         .optimize = optimize,
