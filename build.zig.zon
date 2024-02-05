@@ -10,8 +10,8 @@
     },
     .dependencies = .{
         .boringssl_source = .{
-            .url = "https://code.flowtr.dev/mirrors/aws-lc/archive/eaa19c77d000175da90da7b4ef22ffe24dfc2a2f.tar.gz",
-            .hash = "1220a2a1005631a68b4bfa92eac0a7775e9e76b4772d3e1898ead4751e9bdb822501",
+            .url = "https://github.com/aws/aws-lc/archive/56def5a253d27280f3b7bd6564cfa5a11211aee8.tar.gz",
+            .hash = "1220b404f239d0911665e3328c7574d8bf6b0f6bd2b0af9761cb2af7ea0eada6c6df",
         },
     },
 }
