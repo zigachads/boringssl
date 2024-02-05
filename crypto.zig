@@ -6,6 +6,14 @@ pub fn build(
     optimize: std.builtin.OptimizeMode,
     boringssl_dep: *std.Build.Dependency,
 ) !*std.Build.Step.Compile {
+    const cflags: []const []const u8 = &[_][]const u8{
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wsign-conversion",
+    };
+
     const lib = b.addStaticLibrary(.{
         .name = "crypto",
         .optimize = optimize,
@@ -20,6 +28,21 @@ pub fn build(
     lib.defineCMacro("ARCH", "generic");
     lib.defineCMacro("OPENSSL_NO_ASM", null);
 
+    if (target.result.os.tag == .windows) {
+        const winpthreads = b.dependency("zwinpthreads", .{
+            .target = target,
+            .optimize = optimize,
+        });
+
+        const winpthreads_source = b.dependency("winpthreads_source", .{
+            .target = target,
+            .optimize = optimize,
+        });
+
+        lib.linkLibrary(winpthreads.artifact("winpthreads"));
+        lib.addIncludePath(winpthreads_source.path("mingw-w64-libraries/winpthreads/include"));
+    }
+
     if (target.result.os.tag == .wasi) {
         lib.defineCMacro("OPENSSL_NO_THREADS_CORRUPT_MEMORY_AND_LEAK_SECRETS_IF_THREADED", null);
         lib.defineCMacro("SO_KEEPALIVE", "0");
@@ -31,14 +54,6 @@ pub fn build(
         lib.defineCMacro("connect(a,b,c)", "-1");
         lib.defineCMacro("GRND_NONBLOCK", "0");
     }
-
-    const cflags: []const []const u8 = &[_][]const u8{
-        "-Wall",
-        "-Wextra",
-        "-Wpedantic",
-        "-Wconversion",
-        "-Wsign-conversion",
-    };
 
     lib.addIncludePath(boringssl_dep.path("include"));
 

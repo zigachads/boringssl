@@ -13,5 +13,13 @@
             .url = "https://github.com/aws/aws-lc/archive/56def5a253d27280f3b7bd6564cfa5a11211aee8.tar.gz",
             .hash = "1220b404f239d0911665e3328c7574d8bf6b0f6bd2b0af9761cb2af7ea0eada6c6df",
         },
+        .zwinpthreads = .{
+            .url = "https://github.com/zigachads/zwinpthreads/archive/ec24faf80056b0ce6d874bbf14564f0318ca8b9a.tar.gz",
+            .hash = "1220a223dfe4c7c4eaad4a2bea6fa7734498d88d5770b281cc3516996776968f93e3",
+        },
+        .winpthreads_source = .{
+            .url = "https://github.com/mingw-w64/mingw-w64/archive/1415ff7f9b835e9ea39864c9625ec6fb72682918.tar.gz",
+            .hash = "122031810ac73e7901c89fff9bdb65d942bab8e5b1e2bc9941768a57491df1454209",
+        },
     },
 }

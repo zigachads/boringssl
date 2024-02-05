@@ -32,6 +32,21 @@ pub fn build(
         lib.defineCMacro("GRND_NONBLOCK", "0");
     }
 
+    if (target.result.os.tag == .windows) {
+        const winpthreads = b.dependency("zwinpthreads", .{
+            .target = target,
+            .optimize = optimize,
+        });
+
+        const winpthreads_source = b.dependency("winpthreads_source", .{
+            .target = target,
+            .optimize = optimize,
+        });
+
+        lib.linkLibrary(winpthreads.artifact("winpthreads"));
+        lib.addIncludePath(winpthreads_source.path("mingw-w64-libraries/winpthreads/include"));
+    }
+
     const cflags: []const []const u8 = &[_][]const u8{
         "-Wall",
         "-Wextra",
