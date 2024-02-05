@@ -3,7 +3,6 @@ const crypto = @import("crypto.zig");
 const ssl = @import("ssl.zig");
 
 pub fn build(b: *std.Build) !void {
-    c
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
